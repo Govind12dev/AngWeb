@@ -1,0 +1,72 @@
+<form #form="ngForm" (submit)="onSubmit(form)" autocomplete="off">
+        <input type="hidden" name="TaskID" #TaskID="ngModel" [(ngModel)]="service.formData.TaskID">
+        <div class="form-group">
+          <label>Task</label>
+          <input name="TaskName" #TaskName="ngModel" [(ngModel)]="service.formData.TaskName" class="form-control" required>
+          <div class="validation-error" *ngIf="TaskName.invalid && TaskName.touched">This field is required.</div>
+        </div>   
+        
+        <div class="form-group">
+                <label>Parent Task</label>
+                <input type="checkbox" name="parentTask" class="form-control" checked>
+       </div>
+       <div class="form-group">
+            <label>Priority</label>
+            <input type="range" name="Priority" #Priority="ngModel" [(ngModel)]="service.formData.Priority" class="form-control" required>            
+          </div>
+        <div class="form-row">          
+          <div class="form-group col-md-6">
+            <label>Start Date</label>
+          <input type="date" id="StartDate" name="StartDate" #StartDate="ngModel" [ngModel]="service.formData.StartDate | date:'yyyy-MM-dd'" 
+          (ngModelChange)="service.formData.StartDate = $event" class="form-control">
+          </div>      
+          <div class="form-group  col-md-6">
+            <label>End Date</label>
+          <input type="date" id="EndDate" name="EndDate" #EndDate="ngModel" [ngModel]="service.formData.EndDate | date:'yyyy-MM-dd'" 
+          (ngModelChange)="service.formData.EndDate = $event" class="form-control">
+          </div>      
+        </div>
+        
+        <!-- <div class="form-row">
+            <div class="form-group col-md-2">
+                <label>Manager</label>
+            </div>
+            <div class="form-group col-md-7">            
+                <input name="searchTerm" #searchTerm="ngModel" [(ngModel)]="searchText" class="form-control" autocomplete="off" 
+                required> 
+            </div>
+            <div class="form-group col-md-3">
+                <a class="btn btn-sm btn-success text-white" (click)="AddOrEditOrderItem(null,service.formData.OrderID)"><i class="fa fa-plus"></i>Search</a>          
+            </div>
+          </div> -->
+    
+          <!-- <table class="table table-striped">
+                  <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Hero Name</th>
+                    <th>Country</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let manager of Managers | filter:searchText">
+                    <td>{{manager.id}}</td>
+                    <td>{{manager.name}}</td>
+                    <td>{{manager.country}}</td>
+                  </tr>
+                  </tbody>
+                </table> -->
+    
+              <!-- <div *ngFor="let manager of managers | managerFilter: searchTerm">
+                <div (click)="onClick(manager.managerid)" class="pointerCursor">
+                  <app-display-manager [manager]="manager" #childComponent>
+    
+                  </app-display-manager>
+                </div>
+              </div> -->
+    
+        <div class="form-group">
+          <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-block">Submit</button>
+          <button type="button" class="btn btn-secondary btn-lg btn-block" (click)=resetForm(form)>Reset</button>
+        </div>
+      </form>
