@@ -24,8 +24,7 @@ export class ProjectList1Component implements OnInit {
   isOpen = false;
   
   ngOnInit() {  
-    this.refreshList();
-        //this.listData = new MatTableDataSource(array);        
+    this.refreshList();               
         this.listData.filterPredicate = (data, filter) => {
            return this.displayedColumns.some(ele => {
              return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
@@ -41,7 +40,7 @@ export class ProjectList1Component implements OnInit {
     if (confirm('Are you sure to delete this record?')) {
       this.service.deleteProject(id).subscribe(res => {
         this.refreshList();        
-        this.toastr.warning('Deleted successfully', 'Project. Register');
+        this.toastr.warning('Deleted successfully', 'Project');
       });
     }
   }
