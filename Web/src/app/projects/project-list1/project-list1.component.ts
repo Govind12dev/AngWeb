@@ -40,7 +40,7 @@ export class ProjectList1Component implements OnInit {
     if (confirm('Are you sure to delete this record?')) {
       this.service.deleteProject(id).subscribe(res => {
         this.refreshList();        
-        this.toastr.warning('Deleted successfully', 'Project');
+        this.toastr.warning('Deleted successfully', 'Project.Register')
       });
     }
   }
