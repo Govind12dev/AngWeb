@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Task} from './task.model';
+import {TaskModel} from './task.model';
 import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -7,26 +7,31 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TaskService {
-  formData : Task;
-  list: Task[];
+  formData : TaskModel;
+  list: TaskModel[];
   readonly rootURL ="http://localhost:49470/api"
 
   constructor(private http: HttpClient) { }
 
-  postTask(formData : Task){
+  postTask(formData : TaskModel){
     return this.http.post(this.rootURL+'/Task',formData);     
    }
 
-   getTaskList(): Observable<Task[]>{
-     return this.http.get<Task[]>(this.rootURL+'/Task/');
+   getTaskList(): Observable<TaskModel[]>{
+     return this.http.get<TaskModel[]>(this.rootURL+'/Task/');
    }
+
+   getTaskListByProject(id : number): Observable<TaskModel[]>
+   {
+    return this.http.get<TaskModel[]>(this.rootURL+'/Task/'+id);
+  }
  
    refreshList(){
      return this.http.get(this.rootURL+'/Task')
-     .toPromise().then(res => this.list = res as Task[]);
+     .toPromise().then(res => this.list = res as TaskModel[]);
     }
  
-    putTask(formData : Task){
+    putTask(formData : TaskModel){
      return this.http.put(this.rootURL+'/Task/'+formData.TaskID,formData);      
      }
  

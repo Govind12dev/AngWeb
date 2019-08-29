@@ -1,70 +1,116 @@
 <form #form="ngForm" (submit)="onSubmit(form)" autocomplete="off">
-    <input type="hidden" name="ProjectID" #ProjectID="ngModel" [(ngModel)]="service.formData.ProjectID">
-    <div class="form-group">
-      <label>Project Name</label>
-      <input name="ProjectName" #ProjectName="ngModel" [(ngModel)]="service.formData.ProjectName" class="form-control" required>
-      <div class="validation-error" *ngIf="ProjectName.invalid && ProjectName.touched">This field is required.</div>
-    </div>    
-    <div class="form-row">
-      <div class="form-group col-md-2">
-        <label>Set Date</label>
-        <input type="checkbox" name="chkDate" class="form-control" checked>
+  <input type="hidden" name="ProjectID" #ProjectID="ngModel" [(ngModel)]="service.formData.ProjectID">
+  <input type="hidden" name="UserID" #UserID="ngModel" [(ngModel)]="service.formData.UserID">
+  <div class="form-group">
+    <label>Project</label>
+    <input name="ProjectName" #ProjectName="ngModel" [(ngModel)]="service.formData.ProjectName" class="form-control"
+      required>
+    <div class="validation-error" *ngIf="ProjectName.invalid && ProjectName.touched">This field is required.</div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-2">
+      <label>Set Date</label>
+      <input type="checkbox" #IsChecked name="IsChecked" checked class="form-control"
+        (change)="OnCheckBoxChange(IsChecked)">
+    </div>
+    <div class="form-group col-md-5">
+      <label>Start Date</label>
+      <input type="date" name="StartDate" #StartDate [ngModel]="service.formData.StartDate | date:'yyyy-MM-dd'"
+        (ngModelChange)="OnChangeStartDate($event)" class="form-control" [disabled]="!IsChecked.checked">
+    </div>
+    <div class="form-group  col-md-5">
+      <label>End Date</label>
+      <input type="date" id="EndDate" name="EndDate" #EndDate="ngModel"
+        [ngModel]="service.formData.EndDate | date:'yyyy-MM-dd'" (ngModelChange)="service.formData.EndDate = $event"
+        class="form-control" [disabled]="!IsChecked.checked" [min]="minDate | date:'yyyy-MM-dd'">
+    </div>
+  </div>
+  <div class="form-group">
+    <label>Priority</label>
+    <input type="range" name="Priority" #Priority="ngModel" [(ngModel)]="service.formData.Priority" class="form-control"
+      required value="0" min="0" max="100">
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-2">
+      <label>Manager</label>
+    </div>
+    <div class="form-group col-md-7">
+      <input type="text" name="ProjectManager" #ProjectManager="ngModel" [(ngModel)]="service.formData.ProjectManager"
+        class="form-control" autocomplete="off" required>
+    </div>
+
+    <div class="form-group col-md-3">
+      <a class="btn btn-sm btn-success text-white" data-target="#searchModal" data-toggle="modal"
+        (click)="searchManager()">Search</a>
+    </div>
+  </div>
+
+
+
+  <div class="form-group">
+    <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-block">Submit</button>
+    <button type="button" class="btn btn-secondary btn-lg btn-block" (click)=resetForm(form)>Reset</button>
+  </div>
+</form>
+
+<div class="modal" id="searchModal" data-backdrop="static" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class=modal-title>Search Users</h4>
+        <button class="close" data-dismiss="modal">&times;</button>
       </div>
-      <div class="form-group col-md-5">
-        <label>Start Date</label>
-      <input type="date" id="StartDate" name="StartDate" #StartDate="ngModel" [ngModel]="service.formData.StartDate | date:'yyyy-MM-dd'" 
-      (ngModelChange)="service.formData.StartDate = $event" class="form-control">
-      </div>      
-      <div class="form-group  col-md-5">
-        <label>End Date</label>
-      <input type="date" id="EndDate" name="EndDate" #EndDate="ngModel" [ngModel]="service.formData.EndDate | date:'yyyy-MM-dd'" 
-      (ngModelChange)="service.formData.EndDate = $event" class="form-control">
-      </div>      
+      <div class="modal-body">
+        <div class="search-div">
+          <mat-form-field class="search-form-field" floatLabel="never">
+            <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
+            <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
+              <mat-icon>close</mat-icon>              
+            </button>
+          </mat-form-field>
+        </div>
+        <div class="mat-elevation-z6">
+          <mat-table [dataSource]="listData">
+            <ng-container matColumnDef="FirstName"> 
+              <mat-header-cell *matHeaderCellDef>Available Users</mat-header-cell>             
+              <mat-cell *matCellDef="let element">{{element.FirstName + ' '+ element.LastName}}</mat-cell>
+            </ng-container>     
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <button mat-icon-button (click)="populateForm(row)" data-dismiss="modal"><mat-icon>launch</mat-icon></button>                  
+                </mat-cell>
+              </ng-container>  
+              <ng-container matColumnDef="noData">
+                  <mat-footer-cell *matFooterCellDef colspan="6">
+                    No data.
+                  </mat-footer-cell>
+                </ng-container>     
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>
+          </mat-table>
+        </div>
+        <!-- <form>
+              <div class="form-row">
+                  <div class="form-group col-md-3">
+              <label for="inputSearchText">Manager Name</label>
+              </div>
+              <div class="form-group col-md-6">
+              <input class="form-control" type="text" id="inputSearchText">
+              </div>
+                <div class="form-group col-md-3">                
+              </div>
+            </div> 
+            <div>           
+            <table class="table table-hover">
+                <tr *ngFor="let user of managerList">
+                  <td (click)="populateForm(user)">{{user.FirstName +' '+ user.LastName}}</td>
+                </tr>
+              </table>
+            </div>            
+          </form> -->
+      </div>
     </div>
-    <div class="form-group">
-            <label>Priority</label>
-            <input type="range" name="Priority" #Priority="ngModel" [(ngModel)]="service.formData.Priority" class="form-control" required>            
-          </div>
-    <!-- <div class="form-row">
-        <div class="form-group col-md-2">
-            <label>Manager</label>
-        </div>
-        <div class="form-group col-md-7">            
-            <input name="searchTerm" #searchTerm="ngModel" [(ngModel)]="searchText" class="form-control" autocomplete="off" 
-            required> 
-        </div>
-        <div class="form-group col-md-3">
-            <a class="btn btn-sm btn-success text-white" (click)="AddOrEditOrderItem(null,service.formData.OrderID)"><i class="fa fa-plus"></i>Search</a>          
-        </div>
-      </div> -->
-
-          <!-- <table class="table table-striped">
-              <thead>
-              <tr>
-                <th>Id</th>
-                <th>Hero Name</th>
-                <th>Country</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let manager of Managers | filter:searchText">
-                <td>{{manager.id}}</td>
-                <td>{{manager.name}}</td>
-                <td>{{manager.country}}</td>
-              </tr>
-              </tbody>
-            </table> -->
-
-          <!-- <div *ngFor="let manager of managers | managerFilter: searchTerm">
-            <div (click)="onClick(manager.managerid)" class="pointerCursor">
-              <app-display-manager [manager]="manager" #childComponent>
-
-              </app-display-manager>
-            </div>
-          </div> -->
-
-    <div class="form-group">
-      <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-block">Submit</button>
-      <button type="button" class="btn btn-secondary btn-lg btn-block" (click)=resetForm(form)>Reset</button>
-    </div>
-  </form>
+  </div>
+</div>

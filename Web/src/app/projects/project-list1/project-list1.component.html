@@ -1,4 +1,3 @@
-
 <div class="search-div">  
   <mat-form-field class="search-form-field" floatLabel="never">
     <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
@@ -19,21 +18,29 @@
     </ng-container>
     <ng-container matColumnDef="StartDate">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.StartDate}}</mat-cell>
+      <mat-cell *matCellDef="let element">{{element.StartDate | date: 'dd/MM/yyyy'}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="EndDate">
       <mat-header-cell *matHeaderCellDef mat-sort-header>End Date</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.EndDate}}</mat-cell>
+      <mat-cell *matCellDef="let element">{{element.EndDate | date: 'dd/MM/yyyy'}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="Priority">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Priority</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.Priority}}</mat-cell>
     </ng-container> 
+    <ng-container matColumnDef="NumberOfTasks">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Tasks</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.NumberOfTasks}}</mat-cell>
+      </ng-container> 
+      <ng-container matColumnDef="Status">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Completed</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.Status}}</mat-cell>
+        </ng-container> 
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let row">
         <button mat-icon-button (click)="onEdit(row)"><mat-icon>launch</mat-icon></button>
-        <button mat-icon-button (click)="onDelete(row.ProjectID)" color="warn"><mat-icon>delete_outline</mat-icon></button>
+        <button mat-icon-button (click)="onDelete(row.ProjectID)" color="warn"><mat-icon>pause_circle_filled</mat-icon></button>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="loading">

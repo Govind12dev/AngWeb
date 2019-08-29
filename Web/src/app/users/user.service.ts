@@ -20,7 +20,7 @@ export class UserService {
 
    getUserList(): Observable<User[]>{
      return this.http.get<User[]>(this.rootURL+'/User/');
-   }
+   }   
  
    refreshList(){
      return this.http.get(this.rootURL+'/User')

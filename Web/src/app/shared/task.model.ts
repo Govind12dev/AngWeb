@@ -1,10 +1,15 @@
-export class Task {
-    TaskID : number;
-    ParentID: number;
-    ProjectID: number;    
+export class TaskModel {
+    ProjectID: number;  
+    ProjectName : string; 
+    TaskID : number; 
     TaskName : string;
+    IsParentTask: boolean;
+    Priority : number;
+    ParentTask: string;
+    ParentTaskID: number;
     StartDate : Date;
     EndDate : Date;
-    Priority : number;
-    Status: string;
+    UserID: number;
+    UserName: string;    
+    Status: string;    
 }

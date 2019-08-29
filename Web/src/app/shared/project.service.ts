@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Project } from './project.model';
+import { ProjectModel } from './project.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -7,28 +7,27 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ProjectService {
-  formData  : Project;
-  list : Project[];
+  formData  : ProjectModel;
+  list : ProjectModel[];
   readonly rootURL ="http://localhost:49470/api"
-  
 
   constructor(private http: HttpClient) { }
 
-  postProject(formData : Project){
-    return this.http.post(this.rootURL+'/Project',formData);
-     
+  postProject(formData : ProjectModel){
+    console.log(formData);  
+    return this.http.post(this.rootURL+'/Project',formData);     
    }
 
-   getProjectList(): Observable<Project[]>{
-     return this.http.get<Project[]>(this.rootURL+'/Project/');
+   getProjectList(): Observable<ProjectModel[]>{
+     return this.http.get<ProjectModel[]>(this.rootURL+'/Project/');
    }
  
    refreshList(){
      return this.http.get(this.rootURL+'/Project')
-     .toPromise().then(res => this.list = res as Project[]);
+     .toPromise().then(res => this.list = res as ProjectModel[]);
     }
  
-    putProject(formData : Project){
+    putProject(formData : ProjectModel){
      return this.http.put(this.rootURL+'/Project/'+formData.ProjectID,formData);      
      }
  

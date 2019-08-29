@@ -1,9 +1,15 @@
-import { Component, OnInit, Input, HostListener } from '@angular/core';
+import { Component, OnInit, Input, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { ProjectService } from 'src/app/shared/project.service';
 import { ToastrService } from 'ngx-toastr';
-import { NgForm } from '@angular/forms';
+import { NgForm} from '@angular/forms';
 import { ProjectList1Component } from '../project-list1/project-list1.component';
+import { ProjectModel } from 'src/app/shared/project.model';
+import { Observable } from 'rxjs';
+import { UserService } from 'src/app/users/user.service';
+import { User } from 'src/app/users/user.model';
+import { DOCUMENT } from '@angular/common';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-project',
@@ -13,32 +19,37 @@ import { ProjectList1Component } from '../project-list1/project-list1.component'
 export class ProjectComponent implements OnInit {
 
   constructor(private service: ProjectService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService, private userService: UserService) { }
 
-    @Input() projectList1: ProjectList1Component;
+    @Input() projectList1: ProjectList1Component; 
+    isValidDate: any;
+    error:any={isError:false,errorMessage:''};
+    minDate: Date;
+    IsChecked:boolean;
+    managerList: User[];   
+
+    //@ViewChild('searchModal',null) searchModal: ElementRef;
+    //projectManager:string;
+
+    listData: MatTableDataSource<any>;
+    displayedColumns: string[] = ['FirstName', 'actions'];  
+    searchKey: string;
+    
 
   ngOnInit() {
-    this.resetForm();
+    this.resetForm();    
+    this.IsChecked = true;
+    this.service.formData.StartDate = new Date();    
+    this.minDate = this.service.formData.StartDate;
+    this.service.formData.EndDate = new Date((new Date()).setDate(this.service.formData.StartDate.getDate() + 1));   
+    //this.projectManager = null;    
   }
 
-  @HostListener('id')
-  click() {
-    this.projectList1.refreshList();
-  }
+  //@HostListener('id')
+  //click() {
+    //this.projectList1.refreshList();
+  //}
 
-  // searchText;
-  // Managers = [
-  //   { id: 11, name: 'Mr. Nice', country: 'India' },
-  //   { id: 12, name: 'Narco' , country: 'USA'},
-  //   { id: 13, name: 'Bombasto' , country: 'UK'},
-  //   { id: 14, name: 'Celeritas' , country: 'Canada' },
-  //   { id: 15, name: 'Magneta' , country: 'Russia'},
-  //   { id: 16, name: 'RubberMan' , country: 'China'},
-  //   { id: 17, name: 'Dynama' , country: 'Germany'},
-  //   { id: 18, name: 'Dr IQ' , country: 'Hong Kong'},
-  //   { id: 19, name: 'Magma' , country: 'South Africa'},
-  //   { id: 20, name: 'Tornado' , country: 'Sri Lanka'}
-  // ];
   
   resetForm(form?: NgForm) {
     if (form != null)
@@ -48,15 +59,28 @@ export class ProjectComponent implements OnInit {
       ProjectName: '',
       StartDate:null ,
       EndDate:null ,
-      Priority: null
+      Priority: 0,
+      //IsChecked:null, 
+      ProjectManager:null,
+      UserID:null ,
+      NumberOfTasks: 0,
+      Status: null   
     }
+    this.IsChecked=false;  
+    //this.projectManager = null;  
   }
 
+  
+
   onSubmit(form: NgForm) {
-    if (form.value.ProjectID == null)
-      this.insertRecord(form);
-    else
-      this.updateRecord(form);
+    //this.isValidDate = this.validateDates(this.service.formData.StartDate.toDateString(), this.service.formData.EndDate.toDateString());
+    //if(this.isValidDate)
+    //{
+      if (form.value.ProjectID == null)    
+        this.insertRecord(form);
+      else
+        this.updateRecord(form);
+    //}
   }
 
   insertRecord(form: NgForm) {
@@ -77,4 +101,63 @@ export class ProjectComponent implements OnInit {
       //this.service.getProjectList();
     });
   }
+
+  OnChangeStartDate(event: any){
+    this.service.formData.EndDate = null; 
+    this.minDate = event;  
+  }
+
+  OnCheckBoxChange(event: any)
+  {
+    // if(event)
+    // {
+    //   this.service.formData.StartDate = new Date();    
+    //   this.minDate = this.service.formData.StartDate;
+    //   this.service.formData.EndDate = new Date((new Date()).setDate(this.service.formData.StartDate.getDate() + 1));   
+    // }
+    // else{
+    //   this.service.formData.StartDate = null;
+    //   this.service.formData.EndDate = null; 
+    // }
+  }
+
+  validateDates(sDate:string , eDate: string){
+    this.isValidDate = true;
+    // if((sDate == null || eDate ==null)){
+    //   this.error={isError:true,errorMessage:'Start date and end date are required.'};
+    //   this.isValidDate = false;
+    // }
+    if((sDate != null && eDate !=null) && (eDate) < (sDate)){
+      //this.error={isError:true,errorMessage:'End date should be grater then start date.'};
+      this.isValidDate = false;
+    }    
+    return this.isValidDate;
+  }
+
+  searchManager()
+  {
+    this.userService.getUserList().subscribe(data =>{    
+      this.listData = new MatTableDataSource(data);
+      //users => { this.managerList = users} )
+    //console.log(this.managerList);
+  });
+  console.log(this.listData);
+}
+
+  populateForm(user : User) { 
+    console.log(user);   
+    this.service.formData.ProjectManager = (user.FirstName+' '+ user.LastName);
+    this.service.formData.UserID = user.UserID; 
+    //this.modal.hide();       
+  }
+
+  onSearchClear() {
+    this.searchKey = "";
+    this.applyFilter();
+  }
+
+  applyFilter() {
+    this.listData.filter = this.searchKey.trim().toLowerCase();
+  }
+
 }

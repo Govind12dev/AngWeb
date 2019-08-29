@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, HostBinding } from '@angular/core';
 import { ProjectService } from 'src/app/shared/project.service';
 import { MatTableDataSource,MatSort,MatPaginator } from '@angular/material';
-import { Project } from 'src/app/shared/project.model';
+import { ProjectModel } from 'src/app/shared/project.model';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -15,7 +15,8 @@ export class ProjectList1Component implements OnInit {
     private toastr: ToastrService) { } 
 
   listData: MatTableDataSource<any>;
-  displayedColumns: string[] = ['ProjectID','ProjectName', 'StartDate', 'EndDate', 'Priority','actions'];
+  displayedColumns: string[] = ['ProjectName', 'StartDate', 'EndDate', 'Priority',
+  'NumberOfTasks','Status','actions'];
   @ViewChild(MatSort,null) sort: MatSort;
   @ViewChild(MatPaginator,null) paginator: MatPaginator;
   searchKey: string;
@@ -24,7 +25,8 @@ export class ProjectList1Component implements OnInit {
   isOpen = false;
   
   ngOnInit() {  
-    this.refreshList();               
+    this.refreshList();
+        //this.listData = new MatTableDataSource(array);        
         this.listData.filterPredicate = (data, filter) => {
            return this.displayedColumns.some(ele => {
              return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
@@ -32,15 +34,15 @@ export class ProjectList1Component implements OnInit {
         };      
   }
 
-  onEdit(row : Project) {    
+  onEdit(row : ProjectModel) {    
     this.service.formData = Object.assign({}, row);
   }
 
   onDelete(id: number) {
-    if (confirm('Are you sure to delete this record?')) {
+    if (confirm('Are you sure to suspend this record?')) {
       this.service.deleteProject(id).subscribe(res => {
         this.refreshList();        
-        this.toastr.warning('Deleted successfully', 'Project.Register')
+        this.toastr.warning('Suspended successfully', 'Project');
       });
     }
   }

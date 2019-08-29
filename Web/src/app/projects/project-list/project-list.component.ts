@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from 'src/app/shared/project.service';
 import { ToastrService } from 'ngx-toastr';
-import { Project } from 'src/app/shared/project.model';
+import { ProjectModel } from 'src/app/shared/project.model';
 
 @Component({
   selector: 'app-project-list',
@@ -17,7 +17,7 @@ export class ProjectListComponent implements OnInit {
     this.service.refreshList();
   }
 
-  populateForm(proj : Project) {
+  populateForm(proj : ProjectModel) {
     this.service.formData = Object.assign({}, proj);
   }
 

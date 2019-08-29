@@ -8,7 +8,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EmployeesComponent } from './employees/employees.component';
@@ -58,9 +57,9 @@ const appRoutes: Routes =[
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MaterialModule,
-    ReactiveFormsModule,
     FormsModule,
+    MaterialModule,
+    ReactiveFormsModule,    
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
