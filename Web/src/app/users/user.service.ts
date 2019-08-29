@@ -10,7 +10,7 @@ export class UserService {
 
   formData : User;
   list: User[];
-  readonly rootURL ="http://localhost:65462/api"
+  readonly rootURL ="http://localhost:49470/api"
 
   constructor(private http: HttpClient) { }
 
