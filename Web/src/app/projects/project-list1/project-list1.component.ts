@@ -13,6 +13,7 @@ export class ProjectList1Component implements OnInit {
 
   constructor(private service: ProjectService,
     private toastr: ToastrService) { } 
+    
 
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['ProjectName', 'StartDate', 'EndDate', 'Priority',
