@@ -16,13 +16,13 @@
     <div class="form-group col-md-5">
       <label>Start Date</label>
       <input type="date" name="StartDate" #StartDate [ngModel]="service.formData.StartDate | date:'yyyy-MM-dd'"
-        (ngModelChange)="OnChangeStartDate($event)" class="form-control" [disabled]="!IsChecked.checked">
+        (ngModelChange)="OnChangeStartDate($event)" required class="form-control" [disabled]="!IsChecked.checked">
     </div>
     <div class="form-group  col-md-5">
       <label>End Date</label>
       <input type="date" id="EndDate" name="EndDate" #EndDate="ngModel"
         [ngModel]="service.formData.EndDate | date:'yyyy-MM-dd'" (ngModelChange)="service.formData.EndDate = $event"
-        class="form-control" [disabled]="!IsChecked.checked" [min]="minDate | date:'yyyy-MM-dd'">
+        class="form-control" required [disabled]="!IsChecked.checked" [min]="minDate | date:'yyyy-MM-dd'">
     </div>
   </div>
   <div class="form-group">
@@ -90,26 +90,7 @@
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>
           </mat-table>
-        </div>
-        <!-- <form>
-              <div class="form-row">
-                  <div class="form-group col-md-3">
-              <label for="inputSearchText">Manager Name</label>
-              </div>
-              <div class="form-group col-md-6">
-              <input class="form-control" type="text" id="inputSearchText">
-              </div>
-                <div class="form-group col-md-3">                
-              </div>
-            </div> 
-            <div>           
-            <table class="table table-hover">
-                <tr *ngFor="let user of managerList">
-                  <td (click)="populateForm(user)">{{user.FirstName +' '+ user.LastName}}</td>
-                </tr>
-              </table>
-            </div>            
-          </form> -->
+        </div>        
       </div>
     </div>
   </div>

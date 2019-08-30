@@ -27,11 +27,11 @@ export class ProjectList1Component implements OnInit {
   ngOnInit() {  
     this.refreshList();
         //this.listData = new MatTableDataSource(array);        
-        this.listData.filterPredicate = (data, filter) => {
-           return this.displayedColumns.some(ele => {
-             return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
-           });
-        };      
+        // this.listData.filterPredicate = (data, filter) => {
+        //    return this.displayedColumns.some(ele => {
+        //      return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
+        //    });
+        // };      
   }
 
   onEdit(row : ProjectModel) {    
