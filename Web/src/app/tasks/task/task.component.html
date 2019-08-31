@@ -9,7 +9,8 @@
     </div>
     <div class="form-group col-md-7">
       <input type="text" name="ProjectName" #ProjectName="ngModel" [(ngModel)]="service.formData.ProjectName"
-        class="form-control" autocomplete="off" required [disabled]="IsParentTask.checked">
+        class="form-control" autocomplete="off" required [disabled]="IsParentTask.checked" readonly
+        placeholder="Choose Project">
     </div>
 
     <div class="form-group col-md-3">
@@ -53,7 +54,7 @@
     </div>
     <div class="form-group col-md-7">
       <input type="text" name="ParentTask" #ParentTask="ngModel" [(ngModel)]="service.formData.ParentTask"
-        class="form-control" autocomplete="off" [disabled]="IsParentTask.checked">
+        class="form-control" autocomplete="off" [disabled]="IsParentTask.checked" readonly placeholder="Choose Task">
     </div>
 
     <div class="form-group col-md-3">
@@ -79,7 +80,8 @@
     </div>
     <div class="form-group col-md-7">
       <input type="text" name="UserName" #UserName="ngModel" [(ngModel)]="service.formData.UserName"
-        class="form-control" autocomplete="off" [disabled]="IsParentTask.checked">
+        class="form-control" autocomplete="off" [disabled]="IsParentTask.checked" readonly 
+        placeholder="Choose User">
     </div>
 
     <div class="form-group col-md-3">
