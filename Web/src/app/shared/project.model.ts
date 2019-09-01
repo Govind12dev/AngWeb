@@ -3,8 +3,7 @@ export class ProjectModel {
     ProjectName : string;
     StartDate : Date;
     EndDate : Date;
-    Priority : number;
-    //IsChecked:boolean;
+    Priority : number;    
     ProjectManager: string;
     UserID: number;
     NumberOfTasks : number;

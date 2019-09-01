@@ -31,12 +31,7 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit() {
     this.service.refreshList();
-    this.subscribeToList();              
-        // this.listData.filterPredicate = (data, filter) => {
-        //    return this.displayedColumns.some(ele => {
-        //      return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
-        //    });
-        // };    
+    this.subscribeToList(); 
   }
 
   onEdit(row : TaskModel) {    

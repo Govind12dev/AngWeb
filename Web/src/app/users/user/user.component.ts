@@ -42,8 +42,7 @@ export class UserComponent implements OnInit {
     this.service.postUser(form.value).subscribe(res => {
       this.toastr.success('Inserted successfully', 'User. Register');
       this.resetForm(form);
-      this.service.refreshList();      
-      //this.service.getProjectList();
+      this.service.refreshList();   
     });
   }
 
@@ -52,7 +51,6 @@ export class UserComponent implements OnInit {
       this.toastr.info('Updated successfully', 'User. Register');
       this.resetForm(form);
       this.service.refreshList();
-      //this.service.getProjectList();
     });
   }
 

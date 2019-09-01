@@ -12,8 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 export class ProjectList1Component implements OnInit {
 
   constructor(private service: ProjectService,
-    private toastr: ToastrService) { } 
-    
+    private toastr: ToastrService) { }     
 
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['ProjectName', 'StartDate', 'EndDate', 'Priority',
@@ -27,13 +26,7 @@ export class ProjectList1Component implements OnInit {
   
   ngOnInit() { 
     this.service.refreshList(); 
-    this.subscribeToList();
-        //this.listData = new MatTableDataSource(array);        
-        // this.listData.filterPredicate = (data, filter) => {
-        //    return this.displayedColumns.some(ele => {
-        //      return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
-        //    });
-        // };      
+    this.subscribeToList();              
   }
 
   onEdit(row : ProjectModel) {    
@@ -65,5 +58,4 @@ export class ProjectList1Component implements OnInit {
   applyFilter() {
     this.listData.filter = this.searchKey.trim().toLowerCase();
   }
-
 }

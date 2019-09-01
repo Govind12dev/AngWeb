@@ -79,8 +79,7 @@ export class TaskComponent implements OnInit {
     this.service.postTask(form.value).subscribe(res => {
       this.toastr.success('Inserted successfully', 'Task. Register');
       this.resetForm(form);
-      this.service.refreshList();      
-      //this.service.getProjectList();
+      this.service.refreshList();  
     });
   }
 
@@ -89,7 +88,6 @@ export class TaskComponent implements OnInit {
       this.toastr.info('Updated successfully', 'Task. Register');
       this.resetForm(form);
       this.service.refreshList();
-      //this.service.getProjectList();
     });
   }
 
@@ -109,23 +107,20 @@ searchTask()
   {
     this.service.getTaskList().subscribe(data =>{    
       this.listTaskData = new MatTableDataSource(data);
-  });
-  console.log(this.listTaskData);
+  });  
 }
 
 searchUser()
   {
     this.userService.getUserList().subscribe(data =>{    
       this.listUserData = new MatTableDataSource(data);
-  });
-  console.log(this.listUserData);
+  });  
 }
 
 populateProjectValue(project : ProjectModel) { 
     console.log(project);   
     this.service.formData.ProjectName = project.ProjectName;
-    this.service.formData.ProjectID = project.ProjectID; 
-    //this.modal.hide();       
+    this.service.formData.ProjectID = project.ProjectID;          
   }
 
   onSearchProjectClear() {
@@ -140,8 +135,7 @@ populateProjectValue(project : ProjectModel) {
   populateTaskValue(task : TaskModel) { 
     console.log(task);   
     this.service.formData.ParentTask = task.TaskName;
-    this.service.formData.ParentTaskID = task.TaskID; 
-    //this.modal.hide();       
+    this.service.formData.ParentTaskID = task.TaskID;          
   }
 
   onSearchTaskClear() {
@@ -156,8 +150,7 @@ populateProjectValue(project : ProjectModel) {
   populateUserValue(user : User) { 
     console.log(user);   
     this.service.formData.UserName = (user.FirstName +' '+ user.LastName);
-    this.service.formData.UserID = user.UserID; 
-    //this.modal.hide();       
+    this.service.formData.UserID = user.UserID;          
   }
 
   onSearchUserClear() {
