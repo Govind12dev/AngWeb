@@ -30,7 +30,8 @@ export class TaskListComponent implements OnInit {
   searchProjectKey: string;
 
   ngOnInit() {
-    this.refreshList();               
+    this.service.refreshList();
+    this.subscribeToList();              
         // this.listData.filterPredicate = (data, filter) => {
         //    return this.displayedColumns.some(ele => {
         //      return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
@@ -45,14 +46,14 @@ export class TaskListComponent implements OnInit {
   onDelete(id: number) {
     if (confirm('Are you sure to complete this record?')) {
       this.service.deleteTask(id).subscribe(res => {
-        this.refreshList();        
+        this.subscribeToList();        
         this.toastr.warning('Completed successfully', 'Task. Register');
       });
     }
   }
 
-  refreshList(){
-    this.service.getTaskList().subscribe(data =>{    
+  subscribeToList(){
+    this.service.list$.subscribe(data =>{    
       this.listData = new MatTableDataSource(data);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;

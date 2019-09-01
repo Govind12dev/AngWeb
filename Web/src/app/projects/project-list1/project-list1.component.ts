@@ -25,8 +25,9 @@ export class ProjectList1Component implements OnInit {
   @HostBinding('id')   
   isOpen = false;
   
-  ngOnInit() {  
-    this.refreshList();
+  ngOnInit() { 
+    this.service.refreshList(); 
+    this.subscribeToList();
         //this.listData = new MatTableDataSource(array);        
         // this.listData.filterPredicate = (data, filter) => {
         //    return this.displayedColumns.some(ele => {
@@ -42,14 +43,14 @@ export class ProjectList1Component implements OnInit {
   onDelete(id: number) {
     if (confirm('Are you sure to suspend this record?')) {
       this.service.deleteProject(id).subscribe(res => {
-        this.refreshList();        
+        this.subscribeToList();        
         this.toastr.warning('Suspended successfully', 'Project');
       });
     }
   }
 
-  refreshList(){
-    this.service.getProjectList().subscribe(data =>{    
+  subscribeToList(){
+    this.service.list$.subscribe(data =>{    
       this.listData = new MatTableDataSource(data);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;

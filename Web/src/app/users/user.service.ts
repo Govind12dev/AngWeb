@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {User} from './user.model';
 import { HttpClient} from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class UserService {
 
   formData : User;
-  list: User[];
+  list$: BehaviorSubject<any> = new BehaviorSubject([]);
   readonly rootURL ="http://localhost:49470/api"
 
   constructor(private http: HttpClient) { }
@@ -24,7 +24,7 @@ export class UserService {
  
    refreshList(){
      return this.http.get(this.rootURL+'/User')
-     .toPromise().then(res => this.list = res as User[]);
+     .toPromise().then(res => this.list$.next(res));
     }
  
     putUser(formData : User){

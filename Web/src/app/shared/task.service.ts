@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import {TaskModel} from './task.model';
 import { HttpClient} from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
   formData : TaskModel;
-  list: TaskModel[];
+  list$: BehaviorSubject<any>=new BehaviorSubject([]);
   readonly rootURL ="http://localhost:49470/api"
 
   constructor(private http: HttpClient) { }
@@ -28,7 +28,7 @@ export class TaskService {
  
    refreshList(){
      return this.http.get(this.rootURL+'/Task')
-     .toPromise().then(res => this.list = res as TaskModel[]);
+     .toPromise().then(res => this.list$.next(res));
     }
  
     putTask(formData : TaskModel){

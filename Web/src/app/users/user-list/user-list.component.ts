@@ -21,7 +21,8 @@ export class UserListComponent implements OnInit {
     searchKey: string;
 
   ngOnInit() {    
-    this.refreshList();               
+    this.service.refreshList(); 
+    this.subscribeToList();              
         // this.listData.filterPredicate = (data, filter) => {
         //    return this.displayedColumns.some(ele => {
         //      return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
@@ -36,14 +37,14 @@ export class UserListComponent implements OnInit {
   onDelete(id: number) {
     if (confirm('Are you sure to delete this record?')) {
       this.service.deleteUser(id).subscribe(res => {
-        this.refreshList();        
+        this.subscribeToList();        
         this.toastr.warning('Deleted successfully', 'User. Register');
       });
     }
   }
 
-  refreshList(){
-    this.service.getUserList().subscribe(data =>{    
+  subscribeToList(){
+    this.service.list$.subscribe(data =>{    
       this.listData = new MatTableDataSource(data);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;

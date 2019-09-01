@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ProjectModel } from './project.model';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
   formData  : ProjectModel;
-  list : ProjectModel[];
+  list$ : BehaviorSubject<any>= new BehaviorSubject([]);
   readonly rootURL ="http://localhost:49470/api"
 
   constructor(private http: HttpClient) { }
@@ -24,7 +24,7 @@ export class ProjectService {
  
    refreshList(){
      return this.http.get(this.rootURL+'/Project')
-     .toPromise().then(res => this.list = res as ProjectModel[]);
+     .toPromise().then(res => this.list$.next(res));
     }
  
     putProject(formData : ProjectModel){
