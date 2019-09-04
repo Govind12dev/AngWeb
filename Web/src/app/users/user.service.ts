@@ -10,7 +10,7 @@ export class UserService {
 
   formData : User;
   list$: BehaviorSubject<any> = new BehaviorSubject([]);
-  readonly rootURL ="http://localhost:49470/api"
+  readonly rootURL ="http://localhost/api/api"
 
   constructor(private http: HttpClient) { }
 

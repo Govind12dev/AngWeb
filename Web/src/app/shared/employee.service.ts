@@ -9,7 +9,7 @@ export class EmployeeService {
 
   formData  : Employee;
   list : Employee[];
-  readonly rootURL ="http://localhost:49470/api"
+  readonly rootURL ="http://localhost/api/api"
 
   constructor(private http: HttpClient) { }
 

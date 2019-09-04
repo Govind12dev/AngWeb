@@ -9,7 +9,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export class TaskService {
   formData : TaskModel;
   list$: BehaviorSubject<any>=new BehaviorSubject([]);
-  readonly rootURL ="http://localhost:49470/api"
+  readonly rootURL ="http://localhost/api/api"
 
   constructor(private http: HttpClient) { }
 
